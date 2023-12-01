@@ -28,30 +28,38 @@ class Space(pyglet.sprite.Sprite):
     def __init__(self, img_path: str, speed_x = 0, speed_y = 0, position_x = 0, position_y = 0, batch=batch):
         self.img = pyglet.image.load(img_path)
         super().__init__(img=self.img, batch=batch)
+        
         self.speed_x = speed_x
         self.speed_y = speed_y
 
         self.img = pyglet.image.load(img_path)
         self.img.anchor_x = self.img.width // 2
         self.img.anchor_y = self.img.height // 2
-        self.sprite = pyglet.sprite.Sprite(self.img, batch=batch)
-
-        self.sprite.x = position_x
-        self.sprite.y = position_y
 
     def move(self, dt: float):
-        self.sprite.x += self.speed_x * dt * FPS/2
-        self.sprite.y += self.speed_y * dt * FPS/2
+        self.x += self.speed_x * dt * FPS/2
+        self.y += self.speed_y * dt * FPS/2
 
 class Meteor(Space):
-    speed_x = 500
-    speed_y = 500
+    img_path = None
 
     def __init__(self, position_x, position_y, batch):
-        super().__init__(img_path="img/meteorBrown_big1.png", position_x = position_x, position_y = position_y, batch=batch)
+        super().__init__(self.img_path, batch=batch)
+        self.x = position_x
+        self.y = position_y
+
+        self.speed_x = random.randint(0,10)
+        self.speed_y = random.randint(0,10)
+
+class MeteorBrown(Meteor):
+    img_path = "img/meteorBrown_big1.png"
+
+class MeteorGray(Meteor):
+    img_path="img/meteorGrey_big1.png"
 
 @window.event
 def on_draw():
+    
     window.clear()
     batch.draw()
 
@@ -70,6 +78,11 @@ def on_mouse_press(x, y, button, mod):
     ship.y = y
 """
 def tick(dt):
+    meteor1.move(dt)
+    meteor2.move(dt)
+    meteor3.move(dt)
+
+
     """
     suter.move(dt)
     bubble.move(dt)
@@ -79,9 +92,10 @@ def tick(dt):
         o.move(dt)
     """
 
-meteor1 = Meteor(position_x = 50, position_y = 50, batch=batch)
-meteor2 = Meteor(position_x = 150, position_y = 50, batch=batch)
-meteor3 = Meteor(position_x = 250, position_y = 50, batch=batch)
+meteor1 = MeteorBrown(position_x = 50, position_y = 50, batch=batch)
+meteor2 = MeteorBrown(position_x = 150, position_y = 50, batch=batch)
+meteor3 = MeteorBrown(position_x = 250, position_y = 50, batch=batch)
+meteor4 = MeteorGray(position_x = 450, position_y = 50, batch=batch)
 
 """
 suter = Space("img/meteorBrown_big1.png", 10, 4)
