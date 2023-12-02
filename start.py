@@ -21,7 +21,7 @@ window = pyglet.window.Window(width=800, height=600)
 batch = pyglet.graphics.Batch()  # pro optimalizované vyreslování objektů
 
 
-class Space(pyglet.sprite.Sprite):
+class SpaceObjects(pyglet.sprite.Sprite):
     speed_x = 0
     speed_y = 0
     speed_modifier = 1
@@ -40,7 +40,6 @@ class Space(pyglet.sprite.Sprite):
     def move(self, dt: float):
         self.x += self.speed_x * dt * FPS/2 * self.speed_modifier
         self.y += self.speed_y * dt * FPS/2 * self.speed_modifier
-        print(self.x)
 
         if self.x > (window.width - self.img.width):
             self.x = window.width - self.img.width
@@ -58,7 +57,7 @@ class Space(pyglet.sprite.Sprite):
             self.y = 0
             self.speed_y = -self.speed_y
 
-class Meteor(Space):
+class Meteor(SpaceObjects):
     img_path = None
 
     def __init__(self, position_x, position_y, batch):
@@ -102,7 +101,7 @@ def tick(dt):
     
 Objects = []
 Meteors = [MeteorBrown, MeteorGray]
-for _ in range(1):
+for _ in range(16):
     Type = random.choice(Meteors)
     Object = Type(position_x = random.randint(0,600), position_y = random.randint(0,800), batch=batch)
     Objects.append(Object)
